@@ -1,0 +1,56 @@
+{
+    "version": "2.0.0",
+    "type": "shell",
+    "label": "GenericBuild",
+    "group": "build",
+    "tasks": [
+        {
+            "label": "aggiungi",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "aggiungi_progetto.bat"
+            ]
+        },
+        {
+            "label": "stop",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "docker system prune --all"
+            ]
+        },
+        {
+            "label": "start",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "docker compose build"
+            ]
+        },
+        {
+            "label": "up",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "docker compose up -d"
+            ]
+        },
+        {
+            "label": "build",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "aggiungi",
+                "stop",
+                "start",
+                "up"
+            ],
+            "problemMatcher": []
+        }
+
+    ]
+}

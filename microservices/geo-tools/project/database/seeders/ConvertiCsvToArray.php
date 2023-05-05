@@ -34,8 +34,6 @@ while ($row = fgets($fp_csv)) {
     
     fputs($fp2_php, "\t\t[");
 
-    echo "row -> linea 36  ({$nfile} file";
-
     foreach ($row as $index => $value) {
         fputs($fp2_php, "'{$index}' => '{$value}',");
     }
@@ -48,7 +46,7 @@ while ($row = fgets($fp_csv)) {
 fclose($fp_csv);
 fputs($fp2_php, "];");
 fclose($fp2_php);
-echo "{$count}";
+
 
 
 

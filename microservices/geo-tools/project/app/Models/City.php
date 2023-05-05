@@ -162,12 +162,8 @@ class City extends Model
             $posUnder=self::add_meters($filters["latitude"], $filters["longitude"], $filters["ray"]);
 
             // prepare una condizione where di filtro al db
-            $query=$query->where(
-                    ["latitude",">=", $posUnder["latitude"]],
-                    ["latitude","<=",$posOver["latitude"]],
-                    ["longitude",">=",$posUnder["longitudes"]],
-                    ["longitude","<=",$posOver["longitude"]]
-            );
+            $query=$query->wherebetween("latitude",[$posUnder["latitude"],$posOver["latitude"]]);
+            $query=$query->wherebetween("longitude",[$posUnder["longitude"],$posOver["longitude"]]);
         }
  
         # ordina

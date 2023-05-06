@@ -37,12 +37,12 @@ class CitiesSeeder extends Seeder
      * scrittura dati sulla tabella geoNazione       
      * 
      * Summary of loadCSV
-     * @return int|string
+     * @return void
      *   int  il numero di righe scritte nella tabella geoNazione
      *   string messaggio di errore
      */
 
-    public function loadData(): string
+    public function loadData()
     {
         $dirs = array_diff(scandir(self::PATH), array('.', '..'));
 
@@ -74,13 +74,12 @@ class CitiesSeeder extends Seeder
                     $count++;
                     commit();
                 }
-                return "Scrittura di " . $count . " righe nella tabella cities";
+                echo "\nScrittura di " . $count . " righe nella tabella cities";
             } catch (ErrorException $error) {
-                return "Scrittura fallita\n" . $error->getMessage();
+                echo "\nScrittura fallita\n" . $error->getMessage();
             } catch (Exception $e) {
-                return "Scrittura fallita\n" . $e->getMessage();
+                echo "\nScrittura fallita\n" . $e->getMessage();
             }
         }
-        return "";
     }
 }

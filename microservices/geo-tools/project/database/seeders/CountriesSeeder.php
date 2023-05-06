@@ -62,7 +62,7 @@ class CountriesSeeder extends Seeder
                 };
                 commit();
                 $totale+=$count;
-                echo "\nScrittura di ".--$i." file su ".count($dirs)." nella tabella countries";
+                echo "\nScrittura di ".--$i." file su ".count($dirs)." nella tabella countries\n";
             } catch (ErrorException $error) {
                 echo "\nScrittura fallita\n" . $error->getMessage();
             } catch (Exception $e) {

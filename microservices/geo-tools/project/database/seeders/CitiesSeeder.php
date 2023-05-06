@@ -47,7 +47,7 @@ class CitiesSeeder extends Seeder
         $dirs = array_diff(scandir(self::PATH), array('.', '..'));
         $totale=0;
         # per ogni file contenuto nella cartella $dirs
-        foreach ($dirs as $file) {
+        foreach ($dirs as $i => $file) {
             beginTransaction();
             try {
                 $count = 0; // conta le righe scritte nel db
@@ -72,10 +72,10 @@ class CitiesSeeder extends Seeder
                     $city->save();
                     echo '.';
                     $count++;
-                    commit();
                 }
+                commit();
                 $totale+=$count;
-                echo "\nScrittura di {$count} righe del file {$file} nella tabella cities";
+                echo "\nScrittura di {--$i} file su ".count($dirs)." nella tabella cities";
             } catch (ErrorException $error) {
                 echo "\nScrittura fallita\n" . $error->getMessage();
             } catch (Exception $e) {

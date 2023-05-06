@@ -41,7 +41,7 @@ class CountriesSeeder extends Seeder
     {
         $dirs = array_diff(scandir(self::PATH), array('.', '..'));
         $totale=0;
-        foreach ($dirs as $file) {
+        foreach ($dirs as $i => $file) {
             beginTransaction();
             try {
                 $count = 0; //conta le righe scritte nel db
@@ -62,7 +62,7 @@ class CountriesSeeder extends Seeder
                 };
                 commit();
                 $totale+=$count;
-                echo "\nScrittura di {$count} righe del file {$file} nella tabella countries";
+                echo "\nScrittura di {--$i} file su ".count($dirs)." nella tabella countries";
             } catch (ErrorException $error) {
                 echo "\nScrittura fallita\n" . $error->getMessage();
             } catch (Exception $e) {

@@ -75,13 +75,13 @@ class CitiesSeeder extends Seeder
                     commit();
                 }
                 $totale+=--$count;
-                echo "\nScrittura di " . $count . " righe nella tabella cities";
+                echo "\nScrittura di {$count} righe del file {$file} nella tabella cities";
             } catch (ErrorException $error) {
                 echo "\nScrittura fallita\n" . $error->getMessage();
             } catch (Exception $e) {
                 echo "\nScrittura fallita\n" . $e->getMessage();
             }
         }
-        echo "\nscrittura totale di $totale righe nella tabella cities";
+        echo "\nscrittura totale di {$totale} righe nella tabella cities";
     }
 }

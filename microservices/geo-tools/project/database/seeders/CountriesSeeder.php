@@ -62,13 +62,13 @@ class CountriesSeeder extends Seeder
                 };
                 commit();
                 $totale+=--$count;
-                echo "\nScrittura di " . $count . " righe nella tabella countries";
+                echo "\nScrittura di {$count} righe del file {$file} nella tabella countries";
             } catch (ErrorException $error) {
                 echo "\nScrittura fallita\n" . $error->getMessage();
             } catch (Exception $e) {
                 echo "\nScrittura fallita\n" . $e->getMessage();
             }
         }
-        echo "\nscrittura totale di $totale righe nella tabella countries";
+        echo "\nscrittura totale di {$totale} righe nella tabella countries";
     }
 }

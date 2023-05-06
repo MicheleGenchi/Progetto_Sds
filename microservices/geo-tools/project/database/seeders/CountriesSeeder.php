@@ -51,17 +51,17 @@ class CountriesSeeder extends Seeder
                 if (empty($rows)) {
                     throw new Exception("Array vuoto in ${self::PATH}/{$file}");
                 }
-                    # scrive array $rows sulla tabella countries
-                    foreach ($rows as $row) {
-                        $country = new Country();
-                        $country->country_code = $row["country_code"];
-                        $country->country = $row["country"];
-                        $country->save();
-                        echo '.';
-                        $count++;
-                    };
-                    commit();
-                    $totale+=--$count;
+                # scrive array $rows sulla tabella countries
+                foreach ($rows as $row) {
+                    $country = new Country();
+                    $country->country_code = $row["country_code"];
+                    $country->country = $row["country"];
+                    $country->save();
+                    echo '.';
+                    $count++;
+                };
+                commit();
+                $totale+=--$count;
                 echo "\nScrittura di " . $count . " righe nella tabella countries";
             } catch (ErrorException $error) {
                 echo "\nScrittura fallita\n" . $error->getMessage();

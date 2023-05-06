@@ -75,7 +75,7 @@ class CitiesSeeder extends Seeder
                 }
                 commit();
                 $totale+=$count;
-                echo "\nScrittura di {--$i} file su ".count($dirs)." nella tabella cities";
+                echo "\nScrittura di ".--$i." file su ".count($dirs)." nella tabella cities";
             } catch (ErrorException $error) {
                 echo "\nScrittura fallita\n" . $error->getMessage();
             } catch (Exception $e) {

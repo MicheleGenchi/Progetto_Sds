@@ -11,6 +11,9 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Summary of CitiesSeeder
+ */
 class CitiesSeeder extends Seeder
 {
     /**
@@ -25,8 +28,8 @@ class CitiesSeeder extends Seeder
         }
     }
 
-    
-     /**
+
+    /**
      * metodo usato nella migrazione 
      * lettura del file geo.csv scaricato dal sito opendatasoft 
      * (https://public.opendatasoft.com/explore/dataset/geonames-postal-code/table/)
@@ -37,40 +40,42 @@ class CitiesSeeder extends Seeder
      *   int  il numero di righe scritte nella tabella geoNazione
      *   string messaggio di errore
      */
-    
-     public function loadData(): string
-     {
-         $dirs = array_diff(scandir("./database/seeders/data/Cities"), array('.', '..'));
 
-         foreach ($dirs as $file) {
+    public function loadData(): string
+    {
+        $dirs = array_diff(scandir("./database/seeders/data/Cities"), array('.', '..'));
+
+        # per ogni file contenuto nella cartella $dirs
+        foreach ($dirs as $file) {
             beginTransaction();
-            try 
-            {
-                # require('./database/seeders/data/Cities.php');
+            try {
+                $count = 0; // conta le righe scritte nel db
+                # richiedi $rows qui
                 require("./database/seeders/data/Cities/{$file}");
-                $count=0;
-                # scrive array geoNazione.php su tabella 
-                foreach ($rows as $row) {
-                    $city = new City();
-                    $city->country_code = $row["country_code"];
-                    $city->postal_code = $row["postal_code"];
-                    $city->position = $row["position"];
-                    $city->region = $row["region"];
-                    $city->region_code = $row["region_code"];
-                    $city->province = $row["province"];
-                    $city->sigle_province = $row["sigle_province"];
-                    $city->latitude = $row["latitude"];
-                    $city->longitude = $row["longitude"];
-                    $city->save();
-                    echo '.';
-                    $count++;
-                };
-                commit();
-                return "Scrittura di ".$count." righe nella tabella cities";
+                # scrive array $rows sulla tabella cities
+                if (isset($rows) and !empty($rows)) {
+                    foreach ($rows as $row) {
+                        $city = new City();
+                        $city->country_code = $row["country_code"];
+                        $city->postal_code = $row["postal_code"];
+                        $city->position = $row["position"];
+                        $city->region = $row["region"];
+                        $city->region_code = $row["region_code"];
+                        $city->province = $row["province"];
+                        $city->sigle_province = $row["sigle_province"];
+                        $city->latitude = $row["latitude"];
+                        $city->longitude = $row["longitude"];
+                        $city->save();
+                        echo '.';
+                        $count++;
+                    };
+                    commit();
+                }
+                return "Scrittura di " . $count . " righe nella tabella cities";
             } catch (ErrorException $error) {
-                return "Scrittura fallita\n".$error->getMessage();
+                return "Scrittura fallita\n" . $error->getMessage();
             } catch (Exception $e) {
-                return "Scrittura fallita\n".$e->getMessage();
+                return "Scrittura fallita\n" . $e->getMessage();
             }
         }
         return "";

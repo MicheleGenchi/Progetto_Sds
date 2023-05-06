@@ -41,21 +41,22 @@ class CountriesSeeder extends Seeder
 
         foreach ($dirs as $file) {
             beginTransaction();
-            try 
-            {
-                # require('./database/seeders/data/Cities.php');
+            try {
+                $count = 0; //conta le righe scritte nel db
+                # richiedi $rows qui
                 require("./database/seeders/data/Countries/{$file}");
-                $count = 0;
-                # scrive array geoNazione.php su tabella 
-                foreach ($rows as $row) {
-                    $country = new Country();
-                    $country->country_code = $row["country_code"];
-                    $country->country = $row["country"];
-                    $country->save();
-                    echo '.';
-                    $count++;
-                };
-                commit();
+                if (isset($rows) and !empty($rows)) {
+                    # scrive array $rows sulla tabella countries
+                    foreach ($rows as $row) {
+                        $country = new Country();
+                        $country->country_code = $row["country_code"];
+                        $country->country = $row["country"];
+                        $country->save();
+                        echo '.';
+                        $count++;
+                    };
+                    commit();
+                }
                 return "Scrittura di " . $count . " righe nella tabella countries";
             } catch (ErrorException $error) {
                 return "Scrittura fallita\n" . $error->getMessage();

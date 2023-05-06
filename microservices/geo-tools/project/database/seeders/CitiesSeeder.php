@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
  */
 class CitiesSeeder extends Seeder
 {
+    Const PATH="./database/seeders/data/Cities";
     /**
      * Run the database seeds.
      */
@@ -43,32 +44,34 @@ class CitiesSeeder extends Seeder
 
     public function loadData(): string
     {
-        $dirs = array_diff(scandir("./database/seeders/data/Cities"), array('.', '..'));
+        $dirs = array_diff(scandir(self::PATH), array('.', '..'));
 
         # per ogni file contenuto nella cartella $dirs
         foreach ($dirs as $file) {
             beginTransaction();
             try {
                 $count = 0; // conta le righe scritte nel db
+                $rows=[];
                 # richiedi $rows qui
-                require("./database/seeders/data/Cities/{$file}");
+                require(self::PATH."/{$file}");
                 # scrive array $rows sulla tabella cities
-                if (isset($rows) and !empty($rows)) {
-                    foreach ($rows as $row) {
-                        $city = new City();
-                        $city->country_code = $row["country_code"];
-                        $city->postal_code = $row["postal_code"];
-                        $city->position = $row["position"];
-                        $city->region = $row["region"];
-                        $city->region_code = $row["region_code"];
-                        $city->province = $row["province"];
-                        $city->sigle_province = $row["sigle_province"];
-                        $city->latitude = $row["latitude"];
-                        $city->longitude = $row["longitude"];
-                        $city->save();
-                        echo '.';
-                        $count++;
-                    };
+                if (empty($rows)) {
+                    throw new Exception("Array vuoto in ${self::PATH}/{$file}");
+                }    
+                foreach ($rows as $row) {
+                    $city = new City();
+                    $city->country_code = $row["country_code"];
+                    $city->postal_code = $row["postal_code"];
+                    $city->position = $row["position"];
+                    $city->region = $row["region"];
+                    $city->region_code = $row["region_code"];
+                    $city->province = $row["province"];
+                    $city->sigle_province = $row["sigle_province"];
+                    $city->latitude = $row["latitude"];
+                    $city->longitude = $row["longitude"];
+                    $city->save();
+                    echo '.';
+                    $count++;
                     commit();
                 }
                 return "Scrittura di " . $count . " righe nella tabella cities";

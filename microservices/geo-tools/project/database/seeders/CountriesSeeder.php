@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 
 class CountriesSeeder extends Seeder
 {
+
+    Const PATH="./database/seeders/data/Countries";
     /**
      * Run the database seeds.
      */
@@ -37,15 +39,18 @@ class CountriesSeeder extends Seeder
      */
     public function loadData(): string
     {
-        $dirs = array_diff(scandir("./database/seeders/data/Countries"), array('.', '..'));
+        $dirs = array_diff(scandir(self::PATH), array('.', '..'));
 
         foreach ($dirs as $file) {
             beginTransaction();
             try {
                 $count = 0; //conta le righe scritte nel db
+                $rows=[];
                 # richiedi $rows qui
-                require("./database/seeders/data/Countries/{$file}");
-                if (isset($rows) and !empty($rows)) {
+                require(self::PATH."/{$file}");
+                if (empty($rows)) {
+                    throw new Exception("Array vuoto in ${self::PATH}/{$file}");
+                }
                     # scrive array $rows sulla tabella countries
                     foreach ($rows as $row) {
                         $country = new Country();
@@ -56,7 +61,6 @@ class CountriesSeeder extends Seeder
                         $count++;
                     };
                     commit();
-                }
                 return "Scrittura di " . $count . " righe nella tabella countries";
             } catch (ErrorException $error) {
                 return "Scrittura fallita\n" . $error->getMessage();

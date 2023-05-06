@@ -40,7 +40,7 @@ class CountriesSeeder extends Seeder
     public function loadData()
     {
         $dirs = array_diff(scandir(self::PATH), array('.', '..'));
-
+        $totale=0;
         foreach ($dirs as $file) {
             beginTransaction();
             try {
@@ -61,6 +61,7 @@ class CountriesSeeder extends Seeder
                         $count++;
                     };
                     commit();
+                    $totale+=--$count;
                 echo "\nScrittura di " . $count . " righe nella tabella countries";
             } catch (ErrorException $error) {
                 echo "\nScrittura fallita\n" . $error->getMessage();
@@ -68,5 +69,6 @@ class CountriesSeeder extends Seeder
                 echo "\nScrittura fallita\n" . $e->getMessage();
             }
         }
+        echo "\nscrittura totale di $totale righe nella tabella countries";
     }
 }

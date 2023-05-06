@@ -45,7 +45,7 @@ class CitiesSeeder extends Seeder
     public function loadData()
     {
         $dirs = array_diff(scandir(self::PATH), array('.', '..'));
-
+        $totale=0;
         # per ogni file contenuto nella cartella $dirs
         foreach ($dirs as $file) {
             beginTransaction();
@@ -73,6 +73,7 @@ class CitiesSeeder extends Seeder
                     echo '.';
                     $count++;
                     commit();
+                    $totale+=--$count;
                 }
                 echo "\nScrittura di " . $count . " righe nella tabella cities";
             } catch (ErrorException $error) {
@@ -80,6 +81,7 @@ class CitiesSeeder extends Seeder
             } catch (Exception $e) {
                 echo "\nScrittura fallita\n" . $e->getMessage();
             }
+            echo "\nscrittura totale di $totale righe nella tabella cities";
         }
     }
 }

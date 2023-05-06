@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\CountriesSeeder;
+use Database\Seeders\CitiesSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

@@ -27,7 +27,7 @@ while ($row = fgets($fp_r)) {
     }
     fputs($fp_w, $row);
     $count++;
-    if ($count==MAX_ROWS OR feof($fp_r)) {
+    if ($count>MAX_ROWS OR feof($fp_r)) {
         echo "\ninizio scrittura file php";
         fclose($fp_w);
         INCLUDE ("ConvertiCsvToArray.php");

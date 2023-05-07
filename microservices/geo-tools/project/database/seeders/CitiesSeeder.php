@@ -48,7 +48,6 @@ class CitiesSeeder extends Seeder
         $totale=0;
         # per ogni file contenuto nella cartella $dirs
         foreach ($dirs as $i => $file) {
-            beginTransaction();
             try {
                 $count = 0; // conta le righe scritte nel db
                 $rows=[];
@@ -58,6 +57,7 @@ class CitiesSeeder extends Seeder
                 if (empty($rows)) {
                     throw new Exception("Array vuoto in ${self::PATH}/{$file}");
                 }    
+                beginTransaction();
                 foreach ($rows as $row) {
                     $city = new City();
                     $city->country_code = $row["country_code"];

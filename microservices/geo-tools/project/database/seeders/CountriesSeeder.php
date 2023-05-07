@@ -42,7 +42,6 @@ class CountriesSeeder extends Seeder
         $dirs = array_diff(scandir(self::PATH), array('.', '..'));
         $totale=0;
         foreach ($dirs as $i => $file) {
-            beginTransaction();
             try {
                 $count = 0; //conta le righe scritte nel db
                 $rows=[];
@@ -51,6 +50,7 @@ class CountriesSeeder extends Seeder
                 if (empty($rows)) {
                     throw new Exception("Array vuoto in ${self::PATH}/{$file}");
                 }
+                beginTransaction();
                 # scrive array $rows sulla tabella countries
                 foreach ($rows as $row) {
                     $country = new Country();

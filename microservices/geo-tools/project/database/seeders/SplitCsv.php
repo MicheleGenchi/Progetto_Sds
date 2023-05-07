@@ -35,7 +35,7 @@ while ($row = fgets($fp_r)) {
         unlink("{$foutput}");
         echo "\neliminazione file csv temporaneo";
         $nfile++;
-        echo "\nnfile ={$nfile}       count={$count}";
+        echo "\nnfile ={$nfile}       count={$count}\n";
         $count=0;
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Gps as GpsModel;
 use App\Traits\ConstraintsTrait;
+use App\Traits\WithRestUtilsTrait;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -14,7 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GpsController extends BaseController
 {
-    use ConstraintsTrait;
+    use ConstraintsTrait, 
+        WithRestUtilsTrait;
 
     /**
      * Summary of verificaDistanzaTraDueCoordinate
@@ -46,9 +49,15 @@ class GpsController extends BaseController
         } 
         */
         
-        $ris = GpsModel::verifica_posizione($request->all());
-
-
+        try {
+            $ris = GpsModel::verifica_posizione($request->all());
+        } catch (Exception $e) {
+            $code = (int) $e->getCode();
+            $ris = [
+                'response' => $e->getMessage(),
+                'code' => self::validateErrorCode($code)
+            ];
+        }
         return response()->json($ris['response'], $ris['code']);
     }
 }

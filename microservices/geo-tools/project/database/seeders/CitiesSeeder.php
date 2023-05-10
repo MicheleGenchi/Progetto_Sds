@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\City;
 use App\Models\CsvImport;
 use App\Models\Geo;
+use App\Traits\WithRestUtilsTrait;
 use ErrorException;
 use Exception;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,15 +17,21 @@ use Illuminate\Support\Facades\DB;
  */
 class CitiesSeeder extends Seeder
 {
+    use WithRestUtilsTrait;
+
     const PATH = "./database/seeders/data/Cities";
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $isEmpty = DB::table('cities')->select('*')->count() <= 0;
-
-        self::loadData();
+        try {
+            $isEmpty = DB::table('cities')->select('*')->count() <= 0;
+            $ris = self::loadData();
+            print_r($ris);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
 
@@ -35,25 +42,27 @@ class CitiesSeeder extends Seeder
      * scrittura dati sulla tabella geoNazione       
      * 
      * Summary of loadCSV
-     * @return void
+     * @return array|Exception
      *   int  il numero di righe scritte nella tabella geoNazione
      *   string messaggio di errore
      */
 
-    public function loadData(string $path)
+    public function loadData(): array|Exception
     {
-        $dirs = array_diff(scandir($path), array('.', '..'));
-        $totale = 0;
-        # per ogni file contenuto nella cartella $dirs
         try {
+            $dirs = array_diff(scandir(self::PATH), array('.', '..'));
+
+            $totale = 0;
+            # per ogni file contenuto nella cartella $dirs
             foreach ($dirs as $i => $file) {
                 $count = 0; // conta le righe scritte nel db
                 $rows = [];
                 # richiedi $rows qui
                 require(self::PATH . "/{$file}");
+
                 # scrive array $rows sulla tabella cities
                 if (empty($rows)) {
-                    throw new Exception("Array vuoto in {$path}/{$file}");
+                    throw new Exception("\033[31mArray vuoto in " . self::PATH . "/{$file} \033[37m ");
                 }
 
                 beginTransaction();
@@ -70,8 +79,7 @@ class CitiesSeeder extends Seeder
                         # vede se esite già una riga con quelle chiavi uguali nel database    
                         # interrompe la scrittura del file
                         if ($city->first()) {
-                            throw new Exception("<span style=\"color:#AFA;text-align:center;\"> 
-                                    Nel file {$file} risultano righe duplicate <\span>", 500);
+                            throw new Exception("\033[31mNel file {$file} risultano righe duplicate. \033[37m ", 500);
                         }
 
                         $city = new City();
@@ -91,20 +99,21 @@ class CitiesSeeder extends Seeder
                     commit();
 
                 } catch (Exception $erow) {
-                    rollback();    
-                    echo "\nScrittura fallita\n" . $erow->getMessage();
+                    rollback();
+                    echo "\033[31m\nScrittura fallita\033[37m\n" . $erow->getMessage();
                 }
-                
+
                 $totale += $count;
-                echo "\nScrittura di " . --$i .
+                echo "\033[93m\nScrittura di " . --$i .
                     " file su " . count($dirs) .
-                    " nella tabella cities\n";
+                    " nella tabella cities\033[37m\n ";
             }
-        } catch (ErrorException $error) {
-            echo "\nScrittura fallita\n" . $error->getMessage();
+            return [
+                "code" => self::HTTP_OK,
+                "response" => "scrittura totale di {$totale} righe nella tabella cities"
+            ];
         } catch (Exception $e) {
-            echo "\nScrittura fallita\n" . $e->getMessage();
+            return new Exception($e->getMessage(), $e->getCode());
         }
-        echo "\nscrittura totale di {$totale} righe nella tabella cities";
     }
 }

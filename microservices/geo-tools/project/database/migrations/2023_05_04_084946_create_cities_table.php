@@ -15,13 +15,13 @@ return new class extends Migration
             $table->increments('id');
             $table->string('country_code');
             $table->string('postal_code')->nullable();
-            $table->string('position')->nullable();;
-            $table->string('region')->nullable();;
-            $table->string('regione_code')->nullable();;
-            $table->string('province')->nullable();;
-            $table->string('sigle_province')->nullable();;
-            $table->string('latitude')->nullable();;
-            $table->string('longitude')->nullable();;
+            $table->string('position')->nullable();
+            $table->string('region')->nullable();
+            $table->string('region_code')->nullable();
+            $table->string('province')->nullable();
+            $table->string('sigle_province')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
 
             #$table->foreign(['id_permesso'])->references('id')->on('permesso')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign("country_code")->references("country_code")->on("countries");

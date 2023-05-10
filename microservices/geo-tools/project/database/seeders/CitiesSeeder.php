@@ -40,9 +40,9 @@ class CitiesSeeder extends Seeder
      *   string messaggio di errore
      */
 
-    public function loadData()
+    public function loadData(string $path)
     {
-        $dirs = array_diff(scandir(self::PATH), array('.', '..'));
+        $dirs = array_diff(scandir($path), array('.', '..'));
         $totale = 0;
         # per ogni file contenuto nella cartella $dirs
         try {
@@ -53,7 +53,7 @@ class CitiesSeeder extends Seeder
                 require(self::PATH . "/{$file}");
                 # scrive array $rows sulla tabella cities
                 if (empty($rows)) {
-                    throw new Exception("Array vuoto in " . ${self::PATH} . "/{$file}");
+                    throw new Exception("Array vuoto in {$path}/{$file}");
                 }
 
                 beginTransaction();
@@ -70,8 +70,8 @@ class CitiesSeeder extends Seeder
                         # vede se esite già una riga con quelle chiavi uguali nel database    
                         # interrompe la scrittura del file
                         if ($city->first()) {
-                            # <span style="color:#AFA;text-align:center;"> #
-                            throw new Exception("\033[01;31m Nel file {$file} risultano righe duplicate \033[01;31m", 500);
+                            throw new Exception("<span style=\"color:#AFA;text-align:center;\"> 
+                                    Nel file {$file} risultano righe duplicate <\span>", 500);
                         }
 
                         $city = new City();

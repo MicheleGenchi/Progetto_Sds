@@ -57,7 +57,8 @@ class CountriesSeeder extends Seeder
                     # vede se esite già una riga con quelle chiavi uguali nel database    
                     # interrompe la scrittura del file
                     if ($country->first()) {
-                        throw new Exception("Nel file {$file} risultano righe duplicate", 500);
+                        throw new Exception("<span style=\"color:#AFA;text-align:center;\"> 
+                        Nel file {$file} risultano righe duplicate <\span>", 500);
                     }
 
                     $country= new Country();

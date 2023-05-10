@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
  */
 class CitiesSeeder extends Seeder
 {
-    Const PATH="./database/seeders/data/Cities";
+    const PATH = "./database/seeders/data/Cities";
     /**
      * Run the database seeds.
      */
@@ -24,9 +24,7 @@ class CitiesSeeder extends Seeder
     {
         $isEmpty = DB::table('cities')->select('*')->count() <= 0;
 
-        if ($isEmpty) {
-            self::loadData();
-        }
+        self::loadData();
     }
 
 
@@ -45,42 +43,67 @@ class CitiesSeeder extends Seeder
     public function loadData()
     {
         $dirs = array_diff(scandir(self::PATH), array('.', '..'));
-        $totale=0;
+        $totale = 0;
         # per ogni file contenuto nella cartella $dirs
-        foreach ($dirs as $i => $file) {
-            try {
+        try {
+            foreach ($dirs as $i => $file) {
                 $count = 0; // conta le righe scritte nel db
-                $rows=[];
+                $rows = [];
                 # richiedi $rows qui
-                require(self::PATH."/{$file}");
+                require(self::PATH . "/{$file}");
                 # scrive array $rows sulla tabella cities
                 if (empty($rows)) {
-                    throw new Exception("Array vuoto in ${self::PATH}/{$file}");
-                }    
-                beginTransaction();
-                foreach ($rows as $row) {
-                    $city = new City();
-                    $city->country_code = $row["country_code"];
-                    $city->postal_code = $row["postal_code"];
-                    $city->position = $row["position"];
-                    $city->region = $row["region"];
-                    $city->region_code = $row["region_code"];
-                    $city->province = $row["province"];
-                    $city->sigle_province = $row["sigle_province"];
-                    $city->latitude = $row["latitude"];
-                    $city->longitude = $row["longitude"];
-                    $city->save();
-                    echo '.';
-                    $count++;
+                    throw new Exception("Array vuoto in " . ${self::PATH} . "/{$file}");
                 }
-                commit();
-                $totale+=$count;
-                echo "\nScrittura di ".--$i." file su ".count($dirs)." nella tabella cities\n";
-            } catch (ErrorException $error) {
-                echo "\nScrittura fallita\n" . $error->getMessage();
-            } catch (Exception $e) {
-                echo "\nScrittura fallita\n" . $e->getMessage();
+
+                beginTransaction();
+                try {
+                    foreach ($rows as $row) {
+                        $city = City::
+                            where(function ($fn) use ($row) {
+                                return $fn->where("country_code", $row["country_code"])
+                                    ->where("region_code", $row["region_code"])
+                                    ->where("position", $row["position"])
+                                    ->where("postal_code", $row["postal_code"]);
+                            });
+
+                        # vede se esite già una riga con quelle chiavi uguali nel database    
+                        # interrompe la scrittura del file
+                        if ($city->first()) {
+                            # <span style="color:#AFA;text-align:center;"> #
+                            throw new Exception("\033[01;31m Nel file {$file} risultano righe duplicate \033[01;31m", 500);
+                        }
+
+                        $city = new City();
+                        $city->country_code = $row["country_code"];
+                        $city->postal_code = $row["postal_code"];
+                        $city->position = $row["position"];
+                        $city->region = $row["region"];
+                        $city->region_code = $row["region_code"];
+                        $city->province = $row["province"];
+                        $city->sigle_province = $row["sigle_province"];
+                        $city->latitude = $row["latitude"];
+                        $city->longitude = $row["longitude"];
+                        $city->save();
+                        echo '.';
+                        $count++;
+                    }
+                    commit();
+
+                } catch (Exception $erow) {
+                    rollback();    
+                    echo "\nScrittura fallita\n" . $erow->getMessage();
+                }
+                
+                $totale += $count;
+                echo "\nScrittura di " . --$i .
+                    " file su " . count($dirs) .
+                    " nella tabella cities\n";
             }
+        } catch (ErrorException $error) {
+            echo "\nScrittura fallita\n" . $error->getMessage();
+        } catch (Exception $e) {
+            echo "\nScrittura fallita\n" . $e->getMessage();
         }
         echo "\nscrittura totale di {$totale} righe nella tabella cities";
     }

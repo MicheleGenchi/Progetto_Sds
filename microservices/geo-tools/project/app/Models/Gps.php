@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Nette\Utils\Floats;
 use App\Traits;
 use App\Traits\ManageCoordinateTrait;
+use App\Traits\WithRestUtilsTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Collection;
 
@@ -20,7 +21,7 @@ use Symfony\Component\Validator\Constraints\Collection;
 class Gps extends Model
 {
 
-    use HasFactory, ConstraintsTrait, WithValidationTrait, ManageCoordinateTrait;
+    use HasFactory, ConstraintsTrait, WithValidationTrait, ManageCoordinateTrait, WithRestUtilsTrait;
    
     /**
      * Verifica la distanza tra due punti geografici
@@ -63,7 +64,7 @@ class Gps extends Model
 
         if (count($errors)) {
             return [
-                'code' => HTTP_BAD_REQUEST,
+                'code' => self::HTTP_BAD_REQUEST,
                 'response' => ["error" => $errors]
             ];
         };
@@ -78,7 +79,7 @@ class Gps extends Model
                             ]);
 
         return [
-            'code' => HTTP_OK,
+            'code' => self::HTTP_OK,
             'response' => 
                     ['data' => 
                         [

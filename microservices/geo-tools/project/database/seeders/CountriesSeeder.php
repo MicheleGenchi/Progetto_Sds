@@ -47,6 +47,7 @@ class CountriesSeeder extends Seeder
             $dirs = array_diff(scandir(self::PATH), array('.', '..'));
 
             $totale = 0;
+            $errorFiles=[];
             foreach ($dirs as $i => $file) {
                 $count = 0; //conta le righe scritte nel db
                 $rows = [];
@@ -67,6 +68,7 @@ class CountriesSeeder extends Seeder
                         # vede se esite già una riga con quelle chiavi uguali nel database    
                         # interrompe la scrittura del file
                         if ($country->first()) {
+                            array_push($errorFiles, $file);
                             throw new Exception("\033[31mNel file {$file} risultano righe duplicate. \033[37m ", 500);
                         }
 
@@ -91,7 +93,8 @@ class CountriesSeeder extends Seeder
             }
             return [
                 "code" => self::HTTP_OK,
-                "response" => "scrittura totale di {$totale} righe nella tabella cities"
+                "response" => "scrittura totale di {$totale} righe nella tabella cities",
+                "errors" => $errorFiles
             ];
         } catch (Exception $e) {
             return new Exception($e->getMessage(), $e->getCode());

@@ -22,9 +22,7 @@ class CountriesSeeder extends Seeder
     {
         $isEmpty = DB::table('countries')->select('*')->count() <= 0;
 
-        if ($isEmpty) {
             self::loadData();
-        }
     }
 
     /**
@@ -48,21 +46,35 @@ class CountriesSeeder extends Seeder
                 # richiedi $rows qui
                 require(self::PATH."/{$file}");
                 if (empty($rows)) {
-                    throw new Exception("Array vuoto in ${self::PATH}/{$file}");
+                    throw new Exception("Array vuoto in ".${self::PATH}."/{$file}");
                 }
+
                 beginTransaction();
                 # scrive array $rows sulla tabella countries
                 foreach ($rows as $row) {
-                    $country = new Country();
+                    $country = Country::where("country_code", $row);
+                        
+                    # vede se esite già una riga con quelle chiavi uguali nel database    
+                    # interrompe la scrittura del file
+                    if ($country->first()) {
+                        throw new Exception("Nel file {$file} risultano righe duplicate", 500);
+                    }
+
+                    $country= new Country();
                     $country->country_code = $row["country_code"];
                     $country->country = $row["country"];
                     $country->save();
                     echo '.';
                     $count++;
+
                 };
+
+
                 commit();
                 $totale+=$count;
-                echo "\nScrittura di ".--$i." file su ".count($dirs)." nella tabella countries\n";
+                echo "\nScrittura di ".--$i." file su "
+                    .count($dirs)." nella tabella countries\n";
+
             } catch (ErrorException $error) {
                 echo "\nScrittura fallita\n" . $error->getMessage();
             } catch (Exception $e) {

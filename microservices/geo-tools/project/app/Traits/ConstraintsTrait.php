@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Exception;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -32,16 +33,17 @@ trait ConstraintsTrait
             'region_code' => [ new Assert\NotBlank() ],
             'province' => [new Assert\NotBlank() ],
             'sigle_province' => [new Assert\Regex(['pattern' => '/^([A-Z]{2,3})|([\/d]{0,5})|(^$)$/']) ], # 0..99773 O DA AAA..ZZZ
-            'latitude' => [new Type('float'), new GreaterThanOrEqual(-90), new LessThanOrEqual(90)], 
-            'longitude' => [new Type('float'), new GreaterThanOrEqual(-180), new LessThanOrEqual(180)],
+            'latitude' => [new Type(['int','float']), new GreaterThanOrEqual(-90), new LessThanOrEqual(90)], 
+            'longitude' => [new Type(['int','float']), new GreaterThanOrEqual(-180), new LessThanOrEqual(180)],
             'precision' => [new Type('int'), new GreaterThanOrEqual(1)],
             'ray' => [new Type('int'), new GreaterThanOrEqual(1)],
-            'resultPerPage' => [new Type("integer"), 
+            'resultPerPage' => [new Type('int'), 
                                 new GreaterThanOrEqual(1),
                                 new LessThanOrEqual(self::LIMITE_RISULTATI_PAGINA)],
             'ordine' => [ new Assert\All(new Assert\Choice(['ASC', 'DESC']))
             ],
-            default => []
+            # cerchi di validare un campo che in realtà non ha una validazione
+            default => throw new Exception("Campo $column inesistente!", 500)
         };
 
         return $matched;

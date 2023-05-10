@@ -94,10 +94,6 @@ class City extends Model
      */
     public function get(array $filters): array
     {
-        ini_set('memory_limit', '-1');
-        ini_set('max_execution_time', 0); //300 seconds = 5 minutes
-        include_once 'HttpCodeResponse.php';
-
         # converte il campo ordine in maiuscolo "asc"="ASC", "desc"="DESC"
         # self::initFieldsUpperCase($filters, $fieldToOrder=['ordine']);
 

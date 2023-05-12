@@ -70,5 +70,4 @@ GOTO fine
     cd %rootPath%
     copy init\*.* microservices\%NOMEPROGETTO%\project\*.*
     copy init\database.php microservices\%NOMEPROGETTO%\project\config\*.*
-    del microservices\%NOMEPROGETTO%\project\database.php
     echo buon lavoro!

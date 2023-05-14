@@ -1,0 +1,71 @@
+version: "3.9"
+
+services:
+
+  # DB TEST
+  db-test:
+    image: 
+      mysql:8.0.32
+    restart: 
+      always
+    env_file:
+      - microservices/db/.env.db-test
+    command:
+      - --table_definition_cache=100
+      - --performance_schema=0
+      - --default-authentication-plugin=mysql_native_password
+      - --innodb_use_native_aio=0
+    container_name: db-test
+    ports:
+      - 33060:3306
+
+  # DB GEO
+  db-geo:
+    image: mysql:8.0.32
+    restart: always
+    env_file:
+      - microservices/db/.env.db-geo
+    command:
+      - --table_definition_cache=100
+      - --performance_schema=0
+      - --default-authentication-plugin=mysql_native_password
+      - --innodb_use_native_aio=0
+    container_name: db-geo
+    ports:
+      - 33061:3306
+
+  # DB SDS
+  db:
+    image: 
+      mysql:8.0.32
+    restart: 
+      always
+    env_file:
+      - microservices/db/.env.db
+    command:
+      - --table_definition_cache=100
+      - --performance_schema=0
+      - --default-authentication-plugin=mysql_native_password
+      - --innodb_use_native_aio=0
+    container_name: db-container
+    ports:
+      - 3306:3306    
+    
+# microservice geo-tools
+  geo-tools:
+    container_name: geo-tools
+    build:
+      context: .
+      dockerfile: microservices/geo-tools/Dockerfile
+    entrypoint: php -S 0.0.0.0:80 -t public
+    environment:
+      XDEBUG_MODE: develop,debug
+      XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
+    volumes:
+      - ./microservices/geo-tools/project:/geo-tools # cartella progetto
+      - ./microservices/geo-tools/xdebug/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini # impostazioni per debug
+      - ./microservices/geo-tools/php/php.ini:/usr/local/etc/php/php.ini # impostazioni php
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - 8006:80

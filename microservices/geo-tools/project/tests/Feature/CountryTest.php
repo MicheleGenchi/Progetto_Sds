@@ -27,7 +27,7 @@ class CountryTest extends TestCase
      */
     public function test_getCountry(): void  
     {
-        $nazione = CountryModel::factory()->create();
+        $country = CountryModel::factory()->create();
         $response = $this->getWithBody('/api/nazioniFiltrate', [
             'country_code' => ['IT']
         ]);

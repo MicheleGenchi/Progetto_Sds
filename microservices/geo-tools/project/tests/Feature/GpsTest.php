@@ -27,7 +27,7 @@ class GpsTest extends TestCase
     public function test_verificaDistanzaTraDueCoordinate(): void  
     {
         # $nazione crea 'IT','Italia'
-        $nazione=CountryModel::factory()->create();
+        $country=CountryModel::factory()->create();
 
         $localita=CityModel::factory(App\Models\Geo::class,[
             'country_code' => 'IT',
@@ -43,13 +43,13 @@ class GpsTest extends TestCase
         $localita->save();
 
         $doveMiTrovo=CityModel::factory(App\Models\Geo::class,[
-            'nazione_code' => 'IT',
-            'codice_postale' => '74123',
-            'posto' => 'Lama',
-            'regione' => 'Puglia',
-            'regione_code' => '',
-            'provincia' => 'Taranto',
-            'pr' => 'TA',
+            'country_code' => 'IT',
+            'postal_code' => '74123',
+            'position' => 'Lama',
+            'region' => 'Puglia',
+            'region_code' => '',
+            'province' => 'Taranto',
+            'sigle_province' => 'TA',
             'latitude' => 40.4053, 
             'longitude' => 17.2469
         ])->make();

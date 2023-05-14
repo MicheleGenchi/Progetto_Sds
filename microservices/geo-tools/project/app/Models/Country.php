@@ -95,6 +95,7 @@ class Country extends Model
      */
     public function get(array $filters): array
     {
+        include_once 'HttpCodeResponse.php';
 
         # converte il campo ordine in maiuscolo "asc"="ASC", "desc"="DESC"
         # self::initFieldsUpperCase($filters, $fieldUpper=['ordine']);

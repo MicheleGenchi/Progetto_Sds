@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Country;
 use App\Models\GeoNazione;
-use App\Traits\WithRestUtilsTrait;
 use Database\Seeders\CsvImport;
 use ErrorException;
 use Exception;
@@ -14,20 +13,17 @@ use Illuminate\Support\Facades\DB;
 
 class CountriesSeeder extends Seeder
 {
-    use WithRestUtilsTrait;
 
-    const PATH = "./database/seeders/data/Countries";
+    Const PATH="./database/seeders/data/Countries";
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        try {
-            $isEmpty = DB::table('countries')->select('*')->count() <= 0;
-            $ris = self::loadData();
-            print_r($ris);
-        } catch (Exception $e) {
-            echo $e->getMessage();
+        $isEmpty = DB::table('countries')->select('*')->count() <= 0;
+
+        if ($isEmpty) {
+            self::loadData();
         }
     }
 
@@ -37,67 +33,56 @@ class CountriesSeeder extends Seeder
      * scrittura dati sulla tabella geoNazione       
      * 
      * Summary of loadCSV
-     * @return array|Exception
+     * @return void
      *   int  il numero di righe scritte nella tabella geoNazione
      *   string messaggio di errore
      */
-    public function loadData(): array|Exception
+    public function loadData()
     {
-        try {
-            $dirs = array_diff(scandir(self::PATH), array('.', '..'));
-
-            $totale = 0;
-            $errorFiles=[];
-            foreach ($dirs as $i => $file) {
+        $dirs = array_diff(scandir(self::PATH), array('.', '..'));
+        $totale=0;
+        foreach ($dirs as $i => $file) {
+            try {
                 $count = 0; //conta le righe scritte nel db
-                $rows = [];
+                $rows=[];
                 # richiedi $rows qui
-                require(self::PATH . "/{$file}");
-
-                # scrive array $rows sulla tabella countries
+                require(self::PATH."/{$file}");
                 if (empty($rows)) {
-                    throw new Exception("\033[31mArray vuoto in " . self::PATH . "/{$file} \033[37m ");
+                    throw new Exception("Array vuoto in ".${self::PATH}."/{$file}");
                 }
 
                 beginTransaction();
-                try {
-                    # scrive array $rows sulla tabella countries
-                    foreach ($rows as $row) {
-                        $country = Country::where("country_code", $row);
-
-                        # vede se esite già una riga con quelle chiavi uguali nel database    
-                        # interrompe la scrittura del file
-                        if ($country->first()) {
-                            array_push($errorFiles, $file);
-                            throw new Exception("\033[31mNel file {$file} risultano righe duplicate. \033[37m ", 500);
-                        }
-
-                        $country = new Country();
-                        $country->country_code = $row["country_code"];
-                        $country->country = $row["country"];
-                        $country->save();
-                        echo '.';
-                        $count++;
+                # scrive array $rows sulla tabella countries
+                foreach ($rows as $row) {
+                    $country = Country::where("country_code", $row);
+                        
+                    # vede se esite già una riga con quelle chiavi uguali nel database    
+                    # interrompe la scrittura del file
+                    if ($country->first()) {
+                        throw new Exception("Nel file {$file} risultano righe duplicate", 500);
                     }
-                    commit();
 
-                } catch (Exception $erow) {
-                    rollback();
-                    echo "\033[31m\nScrittura fallita\033[37m\n" . $erow->getMessage();
-                }
+                    $country= new Country();
+                    $country->country_code = $row["country_code"];
+                    $country->country = $row["country"];
+                    $country->save();
+                    echo '.';
+                    $count++;
 
-                $totale += $count;
-                echo "\nScrittura di " . --$i .
-                    " file su " . count($dirs) .
-                    " nella tabella countries\n";
+                };
+
+
+                commit();
+                $totale+=$count;
+                echo "\nScrittura di ".--$i." file su "
+                    .count($dirs)." nella tabella countries\n";
+
+            } catch (ErrorException $error) {
+                echo "\nScrittura fallita\n" . $error->getMessage();
+            } catch (Exception $e) {
+                echo "\nScrittura fallita\n" . $e->getMessage();
             }
-            return [
-                "code" => self::HTTP_OK,
-                "response" => "scrittura totale di {$totale} righe nella tabella cities",
-                "errors" => $errorFiles
-            ];
-        } catch (Exception $e) {
-            return new Exception($e->getMessage(), $e->getCode());
         }
+        echo "\nscrittura totale di {$totale} righe nella tabella countries";
     }
 }

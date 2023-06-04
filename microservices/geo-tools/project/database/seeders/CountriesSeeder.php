@@ -74,7 +74,7 @@ class CountriesSeeder extends Seeder
 
                 commit();
                 $totale+=$count;
-                echo "\nScrittura di ".--$i." file su "
+                echo "\nScrittura di ".substr($file,5,strlen($file))." file su "
                     .count($dirs)." nella tabella countries\n";
 
             } catch (ErrorException $error) {

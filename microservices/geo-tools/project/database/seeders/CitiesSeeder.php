@@ -3,11 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\City;
-use App\Models\CsvImport;
-use App\Models\Geo;
 use ErrorException;
 use Exception;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -98,8 +95,8 @@ class CitiesSeeder extends Seeder
                 }
                 
                 $totale += $count;
-                echo "\nScrittura di " . --$i .
-                    " file su " . count($dirs) .
+                echo "\nScrittura di " . substr($file,5,strlen($file)).
+                    " file su " . count($dirs).
                     " nella tabella cities\n";
             }
         } catch (ErrorException $error) {

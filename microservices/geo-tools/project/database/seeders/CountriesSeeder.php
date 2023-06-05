@@ -72,8 +72,8 @@ class CountriesSeeder extends Seeder
                 commit();
                 $totale+=$count;
                 $nfile=str_replace([".php","temp_"], "", $file, $count);
-                echo "\nScrittura di $nfile file su "
-                    .count($dirs)." nella tabella countries\n";
+                $count=count($dirs);
+                echo "\nScrittura di $nfile file su $count nella tabella countries\n";
 
             } catch (ErrorException $error) {
                 echo "\nScrittura fallita\n" . $error->getMessage();

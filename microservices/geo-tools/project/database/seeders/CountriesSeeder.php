@@ -37,6 +37,7 @@ class CountriesSeeder extends Seeder
     public function loadData()
     {
         $dirs = array_diff(scandir(self::PATH), array('.', '..'));
+        arsort($dirs, SORT_NATURAL);
         $totale=0;
         foreach ($dirs as $i => $file) {
             try {

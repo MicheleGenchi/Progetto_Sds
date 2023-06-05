@@ -42,6 +42,7 @@ class CitiesSeeder extends Seeder
     public function loadData()
     {
         $dirs = array_diff(scandir(self::PATH), array('.', '..'));
+        arsort($dirs, SORT_NATURAL);
         $totale = 0;
         # per ogni file contenuto nella cartella $dirs
         try {

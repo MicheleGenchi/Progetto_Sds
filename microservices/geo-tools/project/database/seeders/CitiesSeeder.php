@@ -96,8 +96,7 @@ class CitiesSeeder extends Seeder
                 
                 $totale += $count;
                 $nfile=str_replace([".php","temp_"], "", $file, $count);
-                echo "\nScrittura di " . $nfile.
-                    " file su " . count($dirs).
+                echo "\nScrittura di $nfile file su " . count($dirs).
                     " nella tabella cities\n";
             }
         } catch (ErrorException $error) {

@@ -3,11 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Country;
-use App\Models\GeoNazione;
-use Database\Seeders\CsvImport;
 use ErrorException;
 use Exception;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -74,7 +71,8 @@ class CountriesSeeder extends Seeder
 
                 commit();
                 $totale+=$count;
-                echo "\nScrittura di ".substr($file,5,strlen($file))." file su "
+                $nfile=str_replace([".php","temp_"], "", $file, $count);
+                echo "\nScrittura di $nfile file su "
                     .count($dirs)." nella tabella countries\n";
 
             } catch (ErrorException $error) {

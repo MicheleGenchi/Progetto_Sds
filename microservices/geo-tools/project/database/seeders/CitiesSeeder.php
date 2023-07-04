@@ -71,7 +71,7 @@ class CitiesSeeder extends Seeder
                         # interrompe la scrittura del file
                         if ($city->first()) {
                             # <span style="color:#AFA;text-align:center;"> #
-                            throw new Exception("\033[01;31m Nel file {$file} risultano righe duplicate \033[01;31m", 500);
+                            throw new Exception("\033[01;31m Nel file {$file} risultano righe duplicate \033[01;31m", 500); //rosso chiaro
                         }
 
                         $city = new City();
@@ -92,20 +92,20 @@ class CitiesSeeder extends Seeder
 
                 } catch (Exception $erow) {
                     rollback();    
-                    echo "\nScrittura fallita\n" . $erow->getMessage();
+                    echo "\n\033[01;33m Scrittura fallita \033[01;33m\n" . $erow->getMessage(); //01;33 giallo
                 }
                 
                 $totale += $count;
                 $nfile=str_replace([".php","temp_"], "", $file, $count);
                 $count=count($dirs);
                 $diff=$count-$nfile;
-                echo "\nScrittura di $diff file su $count nella tabella cities\n";
+                echo "\n\033[01;37m Scrittura di $diff file su $count nella tabella cities \033[01;37m\n"; //01;37 bianco
             }
         } catch (ErrorException $error) {
             echo "\nScrittura fallita\n" . $error->getMessage();
         } catch (Exception $e) {
             echo "\nScrittura fallita\n" . $e->getMessage();
         }
-        echo "\nscrittura totale di {$totale} righe nella tabella cities";
+        echo "\n\033[01;32m scrittura totale di {$totale} righe nella tabella cities \033[01;32m\n"; //01;32 verde chiaro
     }
 }

@@ -57,7 +57,8 @@ class CountriesSeeder extends Seeder
                     # vede se esite già una riga con quelle chiavi uguali nel database    
                     # interrompe la scrittura del file
                     if ($country->first()) {
-                        throw new Exception("Nel file {$file} risultano righe duplicate", 500);
+                        //1;31 rosso chiaro
+                        throw new Exception("\n\033[01;31m Nel file {$file} risultano righe duplicate \033[01;31m\n", 500);
                     }
 
                     $country= new Country();
@@ -75,14 +76,16 @@ class CountriesSeeder extends Seeder
                 $nfile=str_replace([".php","temp_"], "", $file, $count);
                 $count=count($dirs);
                 $diff=$count-$nfile;
-                echo "\nScrittura di $diff file su $count nella tabella countries\n";
+                //1;37 bianco
+                echo "\n\033[01;37m Scrittura di $diff file su $count nella tabella countries \033[01;37m\n";
 
             } catch (ErrorException $error) {
-                echo "\nScrittura fallita\n" . $error->getMessage();
+                //1;33 giallo
+                echo "\n\033[01;33m Scrittura fallita \033[01;33m \n" . $error->getMessage();
             } catch (Exception $e) {
-                echo "\nScrittura fallita\n" . $e->getMessage();
+                echo "\n\033[01;33m Scrittura fallita \033[01;33m \n" . $e->getMessage();
             }
         }
-        echo "\nscrittura totale di {$totale} righe nella tabella countries";
+        echo "\n\033[01;32m scrittura totale di {$totale} righe nella tabella countries\033[01;32m\n"; //verde chiaro
     }
 }

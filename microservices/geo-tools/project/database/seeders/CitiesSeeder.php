@@ -98,7 +98,8 @@ class CitiesSeeder extends Seeder
                 $totale += $count;
                 $nfile=str_replace([".php","temp_"], "", $file, $count);
                 $count=count($dirs);
-                echo "\nScrittura di $nfile file su $count nella tabella cities\n";
+                $diff=$count-$nfile;
+                echo "\nScrittura di $diff file su $count nella tabella cities\n";
             }
         } catch (ErrorException $error) {
             echo "\nScrittura fallita\n" . $error->getMessage();

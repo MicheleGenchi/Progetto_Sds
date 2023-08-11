@@ -125,7 +125,7 @@ class City extends Model
         }
 
         try {
-            # join con la tabella geo_nazione
+            # join con la tabella country $this->table=cities
             $query = self::join("countries", "countries.country_code", "=", "{$this->table}.country_code")->select('*');
 
             # filtra i dati
@@ -167,7 +167,7 @@ class City extends Model
             # DBUTilitities::paginate 
             # se $resultPerPage>LIMITE_RISULTATI_PAGINA prende il limite
             $rows = self::paginate(self::paginate($filters["resultPerPage"]));
-            
+
             return [
                 'code' => self::HTTP_OK,
                 'response' => ['data' => $rows]

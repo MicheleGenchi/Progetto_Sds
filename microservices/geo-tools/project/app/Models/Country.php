@@ -118,8 +118,8 @@ class Country extends Model
             ];
         }
 
-        # join con la tabella geo
-        # $query = self::join('geo', 'geo.nazione_code', '=', "{$this->table}.nazione_code")->select('*');
+        # join con la tabella countries (qui non serve la join) $this->table=country
+        # $query = self::join('cities', 'cities.country_code', '=', "{$this->table}.country_code")->select('*');
         try 
         {
             $query=self::select('*');

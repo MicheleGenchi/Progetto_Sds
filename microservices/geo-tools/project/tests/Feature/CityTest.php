@@ -2,18 +2,17 @@
 
 namespace Tests\Feature;
 
+use App\Models\City as CityModel;
+use App\Models\Country as CountryModel;
 use App\Traits\GetWithBodyTrait;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\City as CityModel;
-use App\Models\Country as CountryModel;
 
 /**
  * Summary of GeoTest
  */
-class GeoTest extends TestCase
+class CityTest extends TestCase
 {
 
     use DatabaseMigrations;

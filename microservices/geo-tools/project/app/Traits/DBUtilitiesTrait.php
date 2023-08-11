@@ -12,7 +12,6 @@ trait DBUtilitiesTrait
 
 	public static function paginate(int $resultPerPage = self::LIMITE_RISULTATI_PAGINA): int
 	{
-
 		return $resultPerPage > self::LIMITE_RISULTATI_PAGINA ? self::LIMITE_RISULTATI_PAGINA : $resultPerPage;
 	}
 

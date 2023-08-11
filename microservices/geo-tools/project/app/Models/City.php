@@ -2,24 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\CsvImport;
 use App\Traits\ConstraintsTrait;
 use App\Traits\DBUtilitiesTrait;
+use App\Traits\ManageCoordinateTrait;
 use App\Traits\WithRestUtilsTrait;
 use App\Traits\WithValidationTrait;
 use Exception;
-use App\Traits\HttpCodeResponseTrait;
-use App\Traits\ManageCoordinateTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\Validator\Validation;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property int $id
@@ -173,8 +166,8 @@ class City extends Model
 
             # DBUTilitities::paginate 
             # se $resultPerPage>LIMITE_RISULTATI_PAGINA prende il limite
-            $rows = $query->paginate(self::paginate($filters["resultPerPage"] ?? self::LIMITE_RISULTATI_PAGINA));
-
+            $rows = self::paginate(self::paginate($filters["resultPerPage"]));
+            
             return [
                 'code' => self::HTTP_OK,
                 'response' => ['data' => $rows]

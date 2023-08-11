@@ -7,7 +7,6 @@ use App\Traits\DBUtilitiesTrait;
 use App\Traits\WithRestUtilsTrait;
 use App\Traits\WithValidationTrait;
 use Exception;
-use App\Traits\HttpCodeResponseTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -121,7 +120,6 @@ class Country extends Model
 
         # join con la tabella geo
         # $query = self::join('geo', 'geo.nazione_code', '=', "{$this->table}.nazione_code")->select('*');
-        # chiedere a Cosimo se è necessaria la join
         try 
         {
             $query=self::select('*');
@@ -136,7 +134,7 @@ class Country extends Model
 
             # DBUTilitities::paginate 
             # se $resultPerPage>LIMITE_RISULTATI_PAGINA prende il limite
-            $rows=$query->paginate(self::paginate($filters["resultPerPage"] ?? self::LIMITE_RISULTATI_PAGINA));
+            $rows=$query->paginate(self::paginate($filters["resultPerPage"]));
     
             return [
                 'code' => self::HTTP_OK,

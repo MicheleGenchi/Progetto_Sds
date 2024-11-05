@@ -3,7 +3,7 @@ version: "3.9"
 services:
 
   # DB TEST
-  db-test:
+  db-sds-test:
     image: mysql:8.0.32
     restart: 
       always
@@ -14,7 +14,7 @@ services:
       - --performance_schema=0
       - --default-authentication-plugin=mysql_native_password
       - --innodb_use_native_aio=0
-    container_name: db-test
+    container_name: db-sds-test
     ports:
       - 33060:3306
 
@@ -35,7 +35,7 @@ services:
       - 33061:3306
 
   # DB SDS
-  db:
+  db-sds:
     image: mysql:8.0.32
     restart: 
       always
@@ -46,7 +46,7 @@ services:
       - --performance_schema=0
       - --default-authentication-plugin=mysql_native_password
       - --innodb_use_native_aio=0
-    container_name: db-container
+    container_name: db-sds
     ports:
       - 3306:3306    
     

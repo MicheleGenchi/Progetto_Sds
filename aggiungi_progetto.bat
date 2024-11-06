@@ -1,11 +1,11 @@
 @echo off
-set rootPath=%userprofile%\Documents\Progetto_Sds
+set rootPath=D:\Sviluppo\Progetto_Sds
 
 echo Enter your nome progetto : 
 set /p NOMEPROGETTO=
 
 echo Enter port progetto : 
-set /p PORTA=
+set /p PORTA=s
 
 if exist microservices\%NOMEPROGETTO% goto progetto_esiste
 

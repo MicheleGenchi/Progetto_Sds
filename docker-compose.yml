@@ -16,7 +16,7 @@ services:
       - --innodb_use_native_aio=0
     container_name: db-sds-test
     ports:
-      - 33060:3306
+      - 33070:3306
 
   # DB GEO
   db-geo:
@@ -32,7 +32,7 @@ services:
       - --innodb_use_native_aio=0
     container_name: db-geo
     ports:
-      - 33061:3306
+      - 33071:3306
 
   # DB SDS
   db-sds:
@@ -48,10 +48,10 @@ services:
       - --innodb_use_native_aio=0
     container_name: db-sds
     ports:
-      - 3306:3306    
+      - 33072:3306
 
-phpmyadmin:
-    container_name: phpmyadmin
+  phpmyadmin:
+    container_name: phpmyadmin-sds
     depends_on:
       - db-sds
       - db-sds-test

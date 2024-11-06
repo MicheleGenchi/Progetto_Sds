@@ -49,7 +49,20 @@ services:
     container_name: db-sds
     ports:
       - 3306:3306    
-    
+
+phpmyadmin:
+    container_name: phpmyadmin
+    depends_on:
+      - db-sds
+      - db-sds-test
+      - db-geo
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+       PMA_HOST: mondial
+       MYSQL_ROOT_PASSWORD: S3rv3r-GEO
+
 # microservice geo-tools
   geo-tools:
     container_name: geo-tools

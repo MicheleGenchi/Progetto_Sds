@@ -11,4 +11,9 @@ use Illuminate\Contracts\View\View;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
+
+
+    public function home():Factory|View {
+        return view('welcome'); 
+    }
 }

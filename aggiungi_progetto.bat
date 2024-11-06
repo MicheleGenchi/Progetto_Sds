@@ -1,5 +1,5 @@
 @echo off
-set rootPath=%userprofile%\Documents\Progetti_php
+set rootPath=%userprofile%\Documents\Progetto_Sds
 
 echo Enter your nome progetto : 
 set /p NOMEPROGETTO=

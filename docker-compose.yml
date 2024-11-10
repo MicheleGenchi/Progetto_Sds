@@ -5,8 +5,6 @@ services:
   # DB TEST
   db-sds-test:
     image: mysql:8.0.32
-    restart: 
-      always
     env_file:
       - microservices/db/.env.db-test
     command:
@@ -21,8 +19,6 @@ services:
   # DB GEO
   db-geo:
     image: mysql:8.0.32
-    restart: 
-      always
     env_file:
       - microservices/db/.env.db-geo
     command:
@@ -37,8 +33,6 @@ services:
   # DB SDS
   db-sds:
     image: mysql:8.0.32
-    restart: 
-      always
     env_file:
       - microservices/db/.env.db
     command:
@@ -50,18 +44,27 @@ services:
     ports:
       - 33072:3306
 
-  phpmyadmin:
-    container_name: phpmyadmin-sds
+  phpmyadmin-geo:
+    container_name: phpmyadmin-geo
     depends_on:
-      - db-sds
-      - db-sds-test
       - db-geo
     image: phpmyadmin/phpmyadmin
     ports:
-      - 8080:80
+      - 8090:80
     environment:
        PMA_HOST: mondial
        MYSQL_ROOT_PASSWORD: S3rv3r-GEO
+
+  phpmyadmin-sds:
+    container_name: phpmyadmin-sds
+    depends_on:
+      - db-sds
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8091:80
+    environment:
+       PMA_HOST: mondial
+       MYSQL_ROOT_PASSWORD: S3rv3r-SDS       
 
 # microservice geo-tools
   geo-tools:

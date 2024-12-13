@@ -1,7 +1,6 @@
 version: "3.9"
 
 services:
-
   # DB TEST
   db-sds-test:
     image: mysql:8.0.32
@@ -49,22 +48,24 @@ services:
     depends_on:
       - db-geo
     image: phpmyadmin/phpmyadmin
+    env_file:
+      - microservices/db/.env.db-geo
     ports:
       - 8090:80
     environment:
-       PMA_HOST: mondial
-       MYSQL_ROOT_PASSWORD: S3rv3r-GEO
+       PMA_HOST: db-geo
 
   phpmyadmin-sds:
     container_name: phpmyadmin-sds
     depends_on:
       - db-sds
     image: phpmyadmin/phpmyadmin
+    env_file:
+      - microservices/db/.env.db
     ports:
       - 8091:80
     environment:
-       PMA_HOST: mondial
-       MYSQL_ROOT_PASSWORD: S3rv3r-SDS       
+       PMA_HOST: db-sds
 
 # microservice geo-tools
   geo-tools:

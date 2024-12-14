@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\GeoNazione;
+use App\Models\Country;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\GeoNazione>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Country>
  */
 class CountrysFactory extends Factory
 {

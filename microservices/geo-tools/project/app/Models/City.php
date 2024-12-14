@@ -156,7 +156,7 @@ class City extends Model
                 $query = $query->where(
                     ["latitude", ">=", $posUnder["latitude"]],
                     ["latitude", "<=", $posOver["latitude"]],
-                    ["longitude", ">=", $posUnder["longitudes"]],
+                    ["longitude", ">=", $posUnder["longitude"]],
                     ["longitude", "<=", $posOver["longitude"]]
                 );
             }

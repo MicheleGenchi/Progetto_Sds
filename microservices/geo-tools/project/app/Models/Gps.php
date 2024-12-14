@@ -49,12 +49,12 @@ class Gps extends Model
         include_once 'HttpCodeResponse.php';
 
         $constraint = new Collection([
-            'latitude' => new Assert\Required(self::getRules('latitudine')),
-            'longitude' => new Assert\Required(self::getRules('longitudine')),
+            'latitude' => new Assert\Required(self::getRules('latitude')),
+            'longitude' => new Assert\Required(self::getRules('longitude')),
             'verification_data' => new Assert\Collection([
                 // the keys correspond to the keys in the input array
-                'latitude' => new Assert\Required(self::getRules('latitudine')),
-                'longitude' => new Assert\Required(self::getRules('longitudine')),
+                'latitude' => new Assert\Required(self::getRules('latitude')),
+                'longitude' => new Assert\Required(self::getRules('longitude')),
                 'precision' => new Assert\required(self::getRules('precision'))
             ])
         ]);

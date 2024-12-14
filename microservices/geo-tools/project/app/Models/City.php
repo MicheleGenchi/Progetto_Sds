@@ -166,7 +166,7 @@ class City extends Model
 
             # DBUTilitities::paginate 
             # se $resultPerPage>LIMITE_RISULTATI_PAGINA prende il limite
-            $rows = self::paginate(self::paginate($filters["resultPerPage"]));
+            $rows = $query->paginate(self::paginate($filters["resultPerPage"]));
 
             return [
                 'code' => self::HTTP_OK,

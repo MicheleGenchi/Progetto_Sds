@@ -100,7 +100,7 @@ class Country extends Model
         # self::initFieldsUpperCase($filters, $fieldUpper=['ordine']);
 
         # validi o trasformi
-        $constraint = new Assert\Collection([
+        $constraints = new Assert\Collection([
             // the keys correspond to the keys in the input array
             'country_code' => new Assert\Optional(new Assert\All(self::getRules('country_code'))),
             'country' => new Assert\Optional(new Assert\All(self::getRules('country'))),
@@ -109,7 +109,7 @@ class Country extends Model
         ]);
 
         # WithValidationTrait
-        $errors = self::valida($filters, $constraint);
+        $errors = self::valida($filters, $constraints);
 
         if (count($errors)) {
             return [

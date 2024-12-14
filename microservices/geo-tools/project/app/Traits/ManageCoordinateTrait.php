@@ -62,11 +62,11 @@ trait ManageCoordinateTrait
     protected static function formula_distanza(array $posizione1, array $posizione2):float
     {
 
-        $lat1Radians = $posizione1['latitudine'] * pi() / 180;
-        $lng1Radians = $posizione1['longitudine'] * pi() / 180;
+        $lat1Radians = $posizione1['latitude'] * pi() / 180;
+        $lng1Radians = $posizione1['longitude'] * pi() / 180;
 
-        $lng2Radians = $posizione2['longitudine'] * pi() / 180;
-        $lat2Radians = $posizione2['latitudine'] * pi() / 180;
+        $lng2Radians = $posizione2['longitude'] * pi() / 180;
+        $lat2Radians = $posizione2['latitude'] * pi() / 180;
 
         $x1 = self::RAGGIO_TERRA * cos($lat1Radians) * cos($lng1Radians);
         $y1 = self::RAGGIO_TERRA * cos($lat1Radians) * sin($lng1Radians);

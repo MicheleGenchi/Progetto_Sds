@@ -48,7 +48,7 @@ class Gps extends Model
     {
         include_once 'HttpCodeResponse.php';
 
-        $constraint = new Collection([
+        $constraints = new Collection([
             'latitude' => new Assert\Required(self::getRules('latitude')),
             'longitude' => new Assert\Required(self::getRules('longitude')),
             'verification_data' => new Assert\Collection([
@@ -59,8 +59,9 @@ class Gps extends Model
             ])
         ]);
 
+        /*
         # WithValidationTrait $data
-        $errors = self::valida($data, $constraint);
+        $errors = self::valida($data, $constraints);
 
         if (count($errors)) {
             return [
@@ -68,7 +69,7 @@ class Gps extends Model
                 'response' => ["error" => $errors]
             ];
         };
-
+*/
         $distanza = self::formula_distanza([
                                 "latitude" => $data['latitude'],
                                 "longitude" => $data['longitude']

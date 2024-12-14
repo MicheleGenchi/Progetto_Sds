@@ -95,7 +95,7 @@ class City extends Model
         # self::initFieldsUpperCase($filters, $fieldToOrder=['ordine']);
 
         # validi o trasformi
-        $constraint = new Assert\Collection([
+        $constraints = new Assert\Collection([
             // the keys correspond to the keys in the input array
             'country_code' => new Assert\Required(new Assert\All(self::getRules('country_code'))),
             'postal_code' => new Assert\Optional(self::getRulesForCountry($filters["country_code"] ?? null)),
@@ -115,7 +115,7 @@ class City extends Model
         ]);
 
         # WithValidationTrait
-        $errors = self::valida($filters, $constraint);
+        $errors = self::valida($filters, $constraints);
 
         if (count($errors)) {
             return [

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Gps as GpsModel;
+use App\Models\Gps;
 use App\Traits\ConstraintsTrait;
 use App\Traits\WithRestUtilsTrait;
 use Exception;
@@ -50,7 +50,8 @@ class GpsController extends BaseController
         */
         
         try {
-            $ris = GpsModel::verifica_posizione($request->all());
+            $model = new Gps();
+            $ris = $model->verifica_posizione($request->all());
         } catch (Exception $e) {
             $code = (int) $e->getCode();
             $ris = [

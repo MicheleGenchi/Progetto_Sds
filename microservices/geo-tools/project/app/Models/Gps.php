@@ -44,7 +44,7 @@ class Gps extends Model
      *          'response': 'messaggio di eccezione'  
      *      ] 
      */
-    public static function verifica_posizione(array $data): array
+    public function verifica_posizione(array $data): array
     {
         include_once 'HttpCodeResponse.php';
 
@@ -69,24 +69,34 @@ class Gps extends Model
                 'response' => ["error" => $errors]
             ];
         };
-*/
-        $distanza = self::formula_distanza([
-                                "latitude" => $data['latitude'],
-                                "longitude" => $data['longitude']
-                            ],
-                            [
-                                "latitude" => $data['verification_data']['latitude'],
-                                "longitude" => $data['verification_data']['longitude']
-                            ]);
-
+        */
+        if (isset($data)) {
+            $distanza = self::formula_distanza([
+                                    "latitude" => $data['latitude'],
+                                    "longitude" => $data['longitude']
+                                ],
+                                [
+                                    "latitude" => $data['verification_data']['latitude'],
+                                    "longitude" => $data['verification_data']['longitude']
+                                ]);
+            return [
+                    'code' => self::HTTP_OK,
+                    'response' => 
+                            ['data' => 
+                                [
+                                    ['Posizione' => ($distanza < $data['verification_data']['precision']) ? 'Valida' : 'Errata']
+                                ]
+                            ]
+                    ];
+        }
         return [
-            'code' => self::HTTP_OK,
+            'code' => self::HTTP_BAD_REQUEST,
             'response' => 
                     ['data' => 
                         [
-                            ['Posizione' => ($distanza < $data['verification_data']['precision']) ? 'Valida' : 'Errata']
+                            ['request' => $data]
                         ]
                     ]
-        ];
+            ];
     }
 }

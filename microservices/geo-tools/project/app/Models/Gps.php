@@ -6,8 +6,6 @@ use App\Traits\ConstraintsTrait;
 use App\Traits\WithValidationTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Nette\Utils\Floats;
-use App\Traits;
 use App\Traits\ManageCoordinateTrait;
 use App\Traits\WithRestUtilsTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -22,7 +20,7 @@ class Gps extends Model
 {
 
     use HasFactory, ConstraintsTrait, WithValidationTrait, ManageCoordinateTrait, WithRestUtilsTrait;
-   
+
     /**
      * Verifica la distanza tra due punti geografici
      * Summary of verificaDistanzaTraDueCoordinate
@@ -59,7 +57,7 @@ class Gps extends Model
             ])
         ]);
 
-        /*
+
         # WithValidationTrait $data
         $errors = self::valida($data, $constraints);
 
@@ -68,35 +66,27 @@ class Gps extends Model
                 'code' => self::HTTP_BAD_REQUEST,
                 'response' => ["error" => $errors]
             ];
-        };
-        */
-        if (isset($data)) {
-            $distanza = self::formula_distanza([
-                                    "latitude" => $data['latitude'],
-                                    "longitude" => $data['longitude']
-                                ],
-                                [
-                                    "latitude" => $data['verification_data']['latitude'],
-                                    "longitude" => $data['verification_data']['longitude']
-                                ]);
-            return [
-                    'code' => self::HTTP_OK,
-                    'response' => 
-                            ['data' => 
-                                [
-                                    ['Posizione' => ($distanza < $data['verification_data']['precision']) ? 'Valida' : 'Errata']
-                                ]
-                            ]
-                    ];
         }
+        
+        $distanza = self::formula_distanza(
+            [
+                "latitude" => $data['latitude'],
+                "longitude" => $data['longitude']
+            ],
+            [
+                "latitude" => $data['verification_data']['latitude'],
+                "longitude" => $data['verification_data']['longitude']
+            ]
+        );
         return [
-            'code' => self::HTTP_BAD_REQUEST,
-            'response' => 
-                    ['data' => 
+            'code' => self::HTTP_OK,
+            'response' =>
+                [
+                    'data' =>
                         [
-                            ['request' => $data]
+                            'differenza_posizioni' => $distanza,
+                            'Posizione' => ($distanza < $data['verification_data']['precision']) ? 'Valida' : 'Errata']
                         ]
-                    ]
-            ];
+                ];
     }
 }

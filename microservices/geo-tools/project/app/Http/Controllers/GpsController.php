@@ -3,21 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gps;
-use App\Traits\ConstraintsTrait;
 use App\Traits\WithRestUtilsTrait;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Symfony\Component\HttpFoundation\Response;
+
 
 /**
  * Summary of GpsUtilitiesController
  */
 class GpsController extends BaseController
 {
-    use ConstraintsTrait, 
-        WithRestUtilsTrait;
+    use WithRestUtilsTrait;
 
     /**
      * Summary of verificaDistanzaTraDueCoordinate

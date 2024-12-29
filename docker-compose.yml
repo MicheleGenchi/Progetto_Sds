@@ -1,6 +1,5 @@
-version: "3.9"
-
 services:
+
   # DB TEST
   db-sds-test:
     image: mysql:8.0.32
@@ -14,6 +13,8 @@ services:
     container_name: db-sds-test
     ports:
       - 33070:3306
+    volumes: 
+      - ./microservices/db/data:/var/lib/mysql
 
   # DB GEO
   db-geo:
@@ -28,7 +29,9 @@ services:
     container_name: db-geo
     ports:
       - 33071:3306
-
+    volumes: 
+      - ./microservices/db/data:/var/lib/mysql
+    
   # DB SDS
   db-sds:
     image: mysql:8.0.32
@@ -42,6 +45,8 @@ services:
     container_name: db-sds
     ports:
       - 33072:3306
+    volumes: 
+      - ./microservices/db/data:/var/lib/mysql
 
   phpmyadmin-geo:
     container_name: phpmyadmin-geo
@@ -54,18 +59,6 @@ services:
       - 8090:80
     environment:
        PMA_HOST: db-geo
-
-  phpmyadmin-sds:
-    container_name: phpmyadmin-sds
-    depends_on:
-      - db-sds
-    image: phpmyadmin/phpmyadmin
-    env_file:
-      - microservices/db/.env.db
-    ports:
-      - 8091:80
-    environment:
-       PMA_HOST: db-sds
 
 # microservice geo-tools
   geo-tools:

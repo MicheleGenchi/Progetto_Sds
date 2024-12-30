@@ -14,7 +14,7 @@ services:
     ports:
       - 33070:3306
     volumes: 
-      - ./microservices/db/data:/var/lib/mysql
+      - ./microservices/db/data/test:/var/lib/mysql
 
   # DB GEO
   db-geo:
@@ -30,7 +30,7 @@ services:
     ports:
       - 33071:3306
     volumes: 
-      - ./microservices/db/data:/var/lib/mysql
+      - ./microservices/db/data/geo:/var/lib/mysql
     
   # DB SDS
   db-sds:
@@ -46,7 +46,7 @@ services:
     ports:
       - 33072:3306
     volumes: 
-      - ./microservices/db/data:/var/lib/mysql
+      - ./microservices/db/data/sds:/var/lib/mysql
 
   phpmyadmin-geo:
     container_name: phpmyadmin-geo

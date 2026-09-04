@@ -1,0 +1,27 @@
+{
+    "version": "2.0.0",
+    "type": "shell",
+    "label": "GenericBuild",
+    "group": "build",
+    "tasks": [
+        {
+            "label": "aggiungi",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "aggiungi_progetto.bat"
+            ]
+        },
+        {
+            "label": "docker",
+            "type": "shell",
+            "command": "docker compose build;docker compose up"
+        },
+        {
+            "label": "build",
+            "dependsOrder": "sequence",
+            "dependsOn": ["aggiungi", "docker"]
+        }
+    ]
+}

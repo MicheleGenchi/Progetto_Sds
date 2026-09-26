@@ -18,7 +18,7 @@ use App\Http\Controllers\GpsController;
 */
 
 //Route::get('home', [Controller::class, 'home']);
-Route::get('cittaFiltrate', [CityController::class, 'get']);
-Route::get('nazioniFiltrate', [CountryController::class, 'get']);
-Route::get('verifica_posizione', [GpsController::class, 'verifica_posizione']);
+Route::post('cittaFiltrate', [CityController::class, 'get']);
+Route::post('nazioniFiltrate', [CountryController::class, 'get']);
+Route::post('verifica_posizione', [GpsController::class, 'verifica_posizione']);
 
